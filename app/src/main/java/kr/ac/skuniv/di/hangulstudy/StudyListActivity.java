@@ -31,7 +31,7 @@ public class StudyListActivity extends FragmentActivity {
 
 
         ListView listview = (ListView) findViewById(R.id.listview) ;
-        ListViewAdapter adapter = new ListViewAdapter();
+        final ListViewAdapter adapter = new ListViewAdapter();
         listview.setAdapter(adapter);
 
 //        BringStudyList bringStudyList = new BringStudyList("123");
@@ -70,10 +70,11 @@ public class StudyListActivity extends FragmentActivity {
                     e.printStackTrace();
                 }
 
-                Log.d("aaa",hangulinfo+"<<<<<<<<<<<<");
+//                Log.d("aaa",hangulinfo+"<<<<<<<<<<<<");
 
                 Intent intent = new Intent(StudyListActivity.this, StudyActivity.class);
                 intent.putExtra("hangulinfo",hangulinfo);
+                intent.putExtra("word",adapter.getItem(i).getWord());
                 startActivity(intent);
             }
         });

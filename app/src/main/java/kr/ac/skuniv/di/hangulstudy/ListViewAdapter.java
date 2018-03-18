@@ -63,8 +63,8 @@ public class ListViewAdapter extends BaseAdapter {
 
     // 지정한 위치(position)에 있는 데이터 리턴
     @Override
-    public Object getItem(int position) {
-        return listViewItemList.get(position) ;
+    public StudyListVO getItem(int position) {
+        return listViewItemList.get(position);
     }
 
     // 아이템 데이터 추가를 위한 함수

@@ -3,11 +3,13 @@ package kr.ac.skuniv.di.hangulstudy;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.Intent;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -261,8 +263,6 @@ public class HangulFragment extends Fragment {
             Log.d("wordCount", wordCount+"");
             if (wordCount != hangulVO.getWord().size() - 1) { //한글자의 마지막 획수까지 완성시킨경우
 
-                //preview를 바꾸주는 부분
-
 
 
                 index = 0;
@@ -271,6 +271,13 @@ public class HangulFragment extends Fragment {
                 Log.d("wordCount2", wordCount+"");
                 resetPaint();
                 MakeWord((JsonArray) hangulVO.getWord().get(wordCount));
+
+
+                //preview를 바꾸어 주는 부분  BroadCast로 메시지를 보냄
+                final Intent broadintent = new Intent("updatepreview");
+                final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+                broadintent.putExtra("wordindex",wordCount);
+                broadcastManager.sendBroadcast(broadintent);
 
                 //한글자를 완성시켰을 경우 틀린 자음,모음 횟수 통신부분
 
