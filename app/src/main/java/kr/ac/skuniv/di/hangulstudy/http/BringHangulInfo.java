@@ -5,6 +5,8 @@ package kr.ac.skuniv.di.hangulstudy.http;
  */
 
 import android.os.AsyncTask;
+import android.util.Log;
+
 import java.io.IOException;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -38,6 +40,7 @@ public class BringHangulInfo extends AsyncTask<Void,Void,String>{
             response = client.newCall(request).execute();
             /////////////////////////////////// newcall 하고 응답받기를 기다리는중
             answer = response.body().string();
+            Log.d("answer",answer);
 
         } catch (IOException e) {
             e.printStackTrace();

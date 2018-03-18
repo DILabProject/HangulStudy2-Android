@@ -1,5 +1,9 @@
 package kr.ac.skuniv.di.hangulstudy;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -8,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -31,7 +36,8 @@ public class StudyActivity extends FragmentActivity{
     SharedMemory sharedMemory;
     RelativeLayout hangulja;
     HangulFragment hangul;
-    String str = "간다";
+    String word ;
+    int wordindex; // 글자 인덱스 (프래그먼트로 부터 index를 받아서 저장)
     private DrawLine drawLine = null; // 선그리기 뷰 객체
     Button reset;
     Button back;
@@ -55,8 +61,8 @@ public class StudyActivity extends FragmentActivity{
     JsonObject fullInfo = new JsonObject();
     JsonObject strokeObj = new JsonObject();
     JsonObject strokeObj1 = new JsonObject();
-    String stroke = "2,1,1,2";
-    String stroke1 = "1,2,1,1";
+//    String stroke = "2,1,1,2";
+//    String stroke1 = "1,2,1,1";
 
     Gson gson;
 
@@ -65,7 +71,7 @@ public class StudyActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_study);
-
+        word = getIntent().getStringExtra("word");
 
         sharedMemory = SharedMemory.getinstance();
 
@@ -79,14 +85,13 @@ public class StudyActivity extends FragmentActivity{
         next.setOnClickListener(bListener);
         preview = (TextView) findViewById(R.id.study_preview);
         pullstring = (TextView) findViewById(R.id.study_pullstring);
-        pullstring.setText(str);
+        pullstring.setText(word);
         hangulja = (RelativeLayout) findViewById(R.id.main_hangulja);
         hangulinfo = getIntent().getStringExtra("hangulinfo");
 
         // 번들생성
         Bundle bundle = new Bundle(1); // 파라미터는 전달할 데이터 수
         bundle.putString("hangulinfo",hangulinfo);
-        bundle.putSerializable("answer",stroke);
         //fragment들 생성
         hangul = new HangulFragment();
         hangul.setArguments(bundle);
@@ -99,7 +104,14 @@ public class StudyActivity extends FragmentActivity{
         fragmentTransaction.commitNow();
 
         //=======================인텐트 받은 글자 파싱
-        preview.setText(String.valueOf(str.charAt(now)));
+        preview.setText(String.valueOf(word.charAt(now)));
+
+
+
+
+        //메세지를 받기위한 브로드캐스트 설정
+        LocalBroadcastManager.getInstance(this).registerReceiver(wordindexReceiver,
+                new IntentFilter("updatepreview"));
 
     }
 
@@ -115,12 +127,11 @@ public class StudyActivity extends FragmentActivity{
                    hangul.backPaint();
                     break;
                 case R.id.study_next:
-                    if(now < str.length()-1){
+                    if(now < word.length()-1){
                         now++;
-                        preview.setText(String.valueOf(str.charAt(now)));
+                        preview.setText(String.valueOf(word.charAt(now)));
                         Bundle bundle = new Bundle(2); // 파라미터는 전달할 데이터 수
                         bundle.putString("jsonarr",jsonarr1.toString());
-                        bundle.putSerializable("answer",stroke1);
                         hangul = new HangulFragment();
                         hangul.setArguments(bundle);
 
@@ -134,10 +145,9 @@ public class StudyActivity extends FragmentActivity{
                 case R.id.study_previous:
                     if(now != 0 ){
                         now--;
-                        preview.setText(String.valueOf(str.charAt(now)));
+                        preview.setText(String.valueOf(word.charAt(now)));
                         Bundle bundle = new Bundle(2); // 파라미터는 전달할 데이터 수
                         bundle.putString("jsonarr",jsonarr.toString());
-                        bundle.putSerializable("answer",stroke);
                         hangul = new HangulFragment();
                         hangul.setArguments(bundle);
                         //fragment전환
@@ -199,5 +209,19 @@ public class StudyActivity extends FragmentActivity{
 //        drawLine.invalidate();
 //    }
 
+
+    BroadcastReceiver wordindexReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+             wordindex = intent.getIntExtra("wordindex",-1);
+//            ChatItem chatitem = gson.fromJson(receivemessage,ChatItem.class);
+            if(wordindex >= 0 )
+            {
+                //what you want to do
+                // preview 를 프래그먼트로 부터 브로드캐스트리시버로 받아서 preview update
+                preview.setText(String.valueOf(word.charAt(wordindex)));
+            }
+        }
+    };
 
 }

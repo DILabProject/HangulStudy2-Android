@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://C:\Users\Juhyun\Desktop\HangulStudy-Android-master\HangulStudy-Android-master\HangulStudy.iml" filepath="C:\Users\Juhyun\Desktop\HangulStudy-Android-master\HangulStudy-Android-master\HangulStudy.iml" />
       <module fileurl="file://$PROJECT_DIR$/HangulStudy-Android-master.iml" filepath="$PROJECT_DIR$/HangulStudy-Android-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HangulStudy2-Android.iml" filepath="$PROJECT_DIR$/HangulStudy2-Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
