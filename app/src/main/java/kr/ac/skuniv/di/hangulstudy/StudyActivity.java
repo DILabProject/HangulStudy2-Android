@@ -84,14 +84,7 @@ public class StudyActivity extends FragmentActivity{
         id = loginInfo.getString("id","none");
 
 
-        reset = (Button) findViewById(R.id.study_reset);
-        reset.setOnClickListener(bListener);
-        back = (Button) findViewById(R.id.study_back);
-        back.setOnClickListener(bListener);
-        previous = (Button) findViewById(R.id.study_previous);
-        previous.setOnClickListener(bListener);
-        next = (Button) findViewById(R.id.study_next);
-        next.setOnClickListener(bListener);
+
         preview = (TextView) findViewById(R.id.study_preview);
         pullstring = (TextView) findViewById(R.id.study_pullstring);
         pullstring.setText(word);
@@ -136,44 +129,39 @@ public class StudyActivity extends FragmentActivity{
         @Override
         public void onClick(View view) {
             switch (view.getId()){
-                case R.id.study_reset:
-                  hangul.resetPaint();
-                    break;
-                case R.id.study_back:    // 뒤로가기 버튼 즉, 가장 최신의 획을 지우는 버튼
-                   hangul.backPaint();
-                    break;
-                case R.id.study_next:
-                    if(now < word.length()-1){
-                        now++;
-                        preview.setText(String.valueOf(word.charAt(now)));
-                        Bundle bundle = new Bundle(2); // 파라미터는 전달할 데이터 수
-                        bundle.putString("jsonarr",jsonarr1.toString());
-                        hangul = new HangulFragment();
-                        hangul.setArguments(bundle);
 
-                        fragmentManager = getSupportFragmentManager();
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.main_hangulja, hangul);
-                        fragmentTransaction.commitNow();
-                        hangul.resetPaint();
-                    }
-                    break;
-                case R.id.study_previous:
-                    if(now != 0 ){
-                        now--;
-                        preview.setText(String.valueOf(word.charAt(now)));
-                        Bundle bundle = new Bundle(2); // 파라미터는 전달할 데이터 수
-                        bundle.putString("jsonarr",jsonarr.toString());
-                        hangul = new HangulFragment();
-                        hangul.setArguments(bundle);
-                        //fragment전환
-                        fragmentManager = getSupportFragmentManager();
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.main_hangulja, hangul);
-                        fragmentTransaction.commitNow();
-                        hangul.resetPaint();
-                    }
-                    break;
+//                case R.id.study_next:
+//                    if(now < word.length()-1){
+//                        now++;
+//                        preview.setText(String.valueOf(word.charAt(now)));
+//                        Bundle bundle = new Bundle(2); // 파라미터는 전달할 데이터 수
+//                        bundle.putString("jsonarr",jsonarr1.toString());
+//                        hangul = new HangulFragment();
+//                        hangul.setArguments(bundle);
+//
+//                        fragmentManager = getSupportFragmentManager();
+//                        fragmentTransaction = fragmentManager.beginTransaction();
+//                        fragmentTransaction.replace(R.id.main_hangulja, hangul);
+//                        fragmentTransaction.commitNow();
+//                        hangul.resetPaint();
+//                    }
+//                    break;
+//                case R.id.study_previous:
+//                    if(now != 0 ){
+//                        now--;
+//                        preview.setText(String.valueOf(word.charAt(now)));
+//                        Bundle bundle = new Bundle(2); // 파라미터는 전달할 데이터 수
+//                        bundle.putString("jsonarr",jsonarr.toString());
+//                        hangul = new HangulFragment();
+//                        hangul.setArguments(bundle);
+//                        //fragment전환
+//                        fragmentManager = getSupportFragmentManager();
+//                        fragmentTransaction = fragmentManager.beginTransaction();
+//                        fragmentTransaction.replace(R.id.main_hangulja, hangul);
+//                        fragmentTransaction.commitNow();
+//                        hangul.resetPaint();
+//                    }
+//                    break;
             }
         }
     };
