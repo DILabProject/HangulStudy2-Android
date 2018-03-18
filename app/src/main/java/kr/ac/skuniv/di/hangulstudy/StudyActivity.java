@@ -1,9 +1,11 @@
 package kr.ac.skuniv.di.hangulstudy;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -26,6 +28,7 @@ import com.google.gson.JsonObject;
 
 import java.util.LinkedList;
 
+import kr.ac.skuniv.di.hangulstudy.http.FinishWord;
 import kr.ac.skuniv.di.hangulstudy.sharedmemory.SharedMemory;
 
 /**
@@ -37,6 +40,8 @@ public class StudyActivity extends FragmentActivity{
     RelativeLayout hangulja;
     HangulFragment hangul;
     String word ;
+    String day;
+    String isFinish;
     int wordindex; // 글자 인덱스 (프래그먼트로 부터 index를 받아서 저장)
     private DrawLine drawLine = null; // 선그리기 뷰 객체
     Button reset;
@@ -44,6 +49,7 @@ public class StudyActivity extends FragmentActivity{
     Button previous;
     Button next;
     String hangulinfo;
+    String id;
 
     int now=0;
     TextView preview;
@@ -72,8 +78,11 @@ public class StudyActivity extends FragmentActivity{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_study);
         word = getIntent().getStringExtra("word");
-
+        day = getIntent().getStringExtra("day");
         sharedMemory = SharedMemory.getinstance();
+        SharedPreferences loginInfo = getSharedPreferences("loginInfo", Activity.MODE_PRIVATE);
+        id = loginInfo.getString("id","none");
+
 
         reset = (Button) findViewById(R.id.study_reset);
         reset.setOnClickListener(bListener);
@@ -88,6 +97,9 @@ public class StudyActivity extends FragmentActivity{
         pullstring.setText(word);
         hangulja = (RelativeLayout) findViewById(R.id.main_hangulja);
         hangulinfo = getIntent().getStringExtra("hangulinfo");
+
+
+
 
         // 번들생성
         Bundle bundle = new Bundle(1); // 파라미터는 전달할 데이터 수
@@ -112,6 +124,10 @@ public class StudyActivity extends FragmentActivity{
         //메세지를 받기위한 브로드캐스트 설정
         LocalBroadcastManager.getInstance(this).registerReceiver(wordindexReceiver,
                 new IntentFilter("updatepreview"));
+
+        //메세지를 받기위한 브로드캐스트 설정
+        LocalBroadcastManager.getInstance(this).registerReceiver(isfinishReceiver,
+                new IntentFilter("finishword"));
 
     }
 
@@ -220,6 +236,24 @@ public class StudyActivity extends FragmentActivity{
                 //what you want to do
                 // preview 를 프래그먼트로 부터 브로드캐스트리시버로 받아서 preview update
                 preview.setText(String.valueOf(word.charAt(wordindex)));
+            }
+        }
+    };
+
+
+    BroadcastReceiver isfinishReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isFinish = intent.getStringExtra("isfinish");
+            if(isFinish.equals("finish"))
+            {
+                //what you want to do
+                // preview 를 프래그먼트로 부터 브로드캐스트리시버로 받아서 preview update
+                FinishWord fw = new FinishWord(id,day);
+                fw.execute();
+                Intent intent1 = new Intent(StudyActivity.this,StudyListActivity.class);
+                startActivity(intent1);
+                finish();
             }
         }
     };
