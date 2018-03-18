@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginInfo = getSharedPreferences("info", Activity.MODE_PRIVATE);
+        loginInfo = getSharedPreferences("loginInfo", Activity.MODE_PRIVATE);
         editor = loginInfo.edit();
 
         id_edit = (EditText)findViewById(R.id.editText_id);
@@ -53,31 +53,31 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(!TextUtils.isEmpty(input_id) && !TextUtils.isEmpty(input_password)) {
                     Intent intent = new Intent(LoginActivity.this, StudyListActivity.class);
-                    Log.d("check", input_id+", " + input_password + "!!!");
-                    startActivity(intent);
+//                    Log.d("check", input_id+", " + input_password + "!!!");
+//                    startActivity(intent);
 
 
-//                    CheckLogin checkLogin = new CheckLogin(input_id, input_password);
-//                    try {
-//                        result = checkLogin.execute().get();
-//                        Log.d("check result", result);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    } catch (ExecutionException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    if(result.equals("0")){
-//                        Toast.makeText(LoginActivity.this, "아이디 혹은 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
-//                    }
-//                    else if(result.equals("1")) {
-//                        //SharedPreference에 값 저장
-//                        editor.putString("id", input_id);
-//                        editor.putString("password",input_password);
-//                        editor.commit(); //완료한다.
-//                        startActivity(intent);
-//                        finish();
-//                    }
+                    CheckLogin checkLogin = new CheckLogin(input_id, input_password);
+                    try {
+                        result = checkLogin.execute().get();
+                        Log.d("check result", result);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(result.equals("0")){
+                        Toast.makeText(LoginActivity.this, "아이디 혹은 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(result.equals("1")) {
+                        //SharedPreference에 값 저장
+                        editor.putString("id", input_id);
+                        editor.putString("password",input_password);
+                        editor.commit(); //완료한다.
+                        startActivity(intent);
+                        finish();
+                    }
                 }
                 else{
                     Toast.makeText(LoginActivity.this, "아이디 혹은 비밀번호를 입력하지 않았습니다.", Toast.LENGTH_SHORT).show();
