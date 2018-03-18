@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFEFD439">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:textSize="40dp"
+        android:textColor="#000000"
+        android:text="한글공부"
+        android:layout_marginTop="15dp"/>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:dividerHeight="0dp"
+        android:scrollbarSize="10dp"
+        android:divider="#000000"
+        android:background="#f2be83"/>
+
+</LinearLayout>

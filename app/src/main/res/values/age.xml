@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="age">
+        <item>1세</item>
+        <item>2세</item>
+        <item>3세</item>
+        <item>4세</item>
+        <item>5세</item>
+        <item>6세</item>
+        <item>7세</item>
+        <item>8세</item>
+        <item>9세</item>
+        <item>10세</item>
+        <item>11세</item>
+        <item>12세</item>
+    </string-array>
+</resources>
