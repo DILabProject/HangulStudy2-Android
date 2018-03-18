@@ -55,7 +55,7 @@ public class HangulFragment extends Fragment {
     private int id = 1;
     private int blackBlockSize = 100; //글자 사이즈
     private int clearBlockSize = 200; //가이드라인 사이즈
-    private int backgroundSize = 8;
+    private int backgroundSize = 10;
     ArrayList<View> GuideLine = new ArrayList<View>();
     ArrayList<Integer> CheckIDList = new ArrayList<Integer>();  //한 획을 그리면서 지나간 view들의 id를 담는 ArrayList
 

@@ -1,6 +1,7 @@
 package kr.ac.skuniv.di.hangulstudy.http;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -32,8 +33,10 @@ public class CheckLogin extends AsyncTask<Void,Void,String> {
         RequestBody requestBody = null;
 
         requestBody = new FormBody.Builder().add("id",id).add("password",password).build();
+        Log.d("sign id", id);
+        Log.d("sign pw", password);
         Request request = new Request.Builder()
-                .url("http://117.17.142.133:8080/skuniv/hangul_input_complete")
+                .url("http://117.17.142.133:8080/skuniv/signIn")
                 .post(requestBody)
                 .build();
         try {
