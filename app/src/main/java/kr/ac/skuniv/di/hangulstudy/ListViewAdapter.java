@@ -1,7 +1,11 @@
 package kr.ac.skuniv.di.hangulstudy;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +13,23 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import kr.ac.skuniv.di.hangulstudy.VO.StudyListVO;
 import kr.ac.skuniv.di.hangulstudy.VO.StudyVo;
+import kr.ac.skuniv.di.hangulstudy.http.BringStudyList;
 
 public class ListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<StudyListVO> listViewItemList = new ArrayList<StudyListVO>() ;
+    public ArrayList<StudyListVO> listViewItemList = new ArrayList<StudyListVO>() ;
+//
     private TextView day;
     private TextView word;
     private ImageView check;
@@ -34,7 +47,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴.
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         final int pos = position;
         final Context context = parent.getContext();
 
@@ -55,7 +68,10 @@ public class ListViewAdapter extends BaseAdapter {
         // 아이템 내 각 위젯에 데이터 반영
         day.setText(listViewItem.getDay());
         word.setText(listViewItem.getWord());
-
+        Log.d("checkpoint",listViewItem.getCheckword());
+        if(listViewItem.getCheckword().equals("1")){
+            check.setImageResource(R.drawable.checkimage);
+        }
         return convertView;
     }
 
@@ -71,17 +87,18 @@ public class ListViewAdapter extends BaseAdapter {
         return listViewItemList.get(position);
     }
 
-    // 아이템 데이터 추가를 위한 함수
-    public void addItem(String day, String word) {
-        StudyListVO item = new StudyListVO();
+//    // 아이템 데이터 추가를 위한 함수
+//    public void addItem(String day, String word) {
+//        StudyListVO item = new StudyListVO();
+//
+//        item.setDay(day);
+//        item.setWord(word);
+//
+//        listViewItemList.add(item);
+//    }
 
-        item.setDay(day);
-        item.setWord(word);
+    public void addItem(StudyListVO studyListVO) {
 
-        listViewItemList.add(item);
-    }
-
-    public void add(StudyListVO studyListVO) {
         listViewItemList.add(studyListVO);
     }
 }

@@ -284,6 +284,10 @@ public class HangulFragment extends Fragment {
             } else {
                 Log.d("finish", "done!!!!!!!!!");
                 //하루차 글자를 모두 완성했을경우
+                final Intent broadintent = new Intent("finishword");
+                final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+                broadintent.putExtra("isfinish","finish");
+                broadcastManager.sendBroadcast(broadintent);
             }
         }
     }

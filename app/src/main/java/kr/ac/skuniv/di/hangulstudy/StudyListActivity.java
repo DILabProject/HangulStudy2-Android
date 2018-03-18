@@ -1,6 +1,8 @@
 package kr.ac.skuniv.di.hangulstudy;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,45 +17,47 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Array;
 import java.util.concurrent.ExecutionException;
 
 import kr.ac.skuniv.di.hangulstudy.VO.StudyListVO;
+import kr.ac.skuniv.di.hangulstudy.http.BringHangulInfo;
 import kr.ac.skuniv.di.hangulstudy.http.BringStudyList;
 
 public class StudyListActivity extends FragmentActivity {
-    kr.ac.skuniv.di.hangulstudy.http.BringHangulInfo bringHangulInfo;
+    BringHangulInfo bringHangulInfo;
     String hangulinfo;
+    String savedId;
+    ListViewAdapter adapter;
+    int StudyActivityCode = 1000;
+    ListView listview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_studylist);
 
+        SharedPreferences loginInfo = getSharedPreferences("loginInfo", Activity.MODE_PRIVATE);
+        savedId = loginInfo.getString("id","none");
 
-        ListView listview = (ListView) findViewById(R.id.listview) ;
-        final ListViewAdapter adapter = new ListViewAdapter();
+       listview = (ListView) findViewById(R.id.listview) ;
+       adapter = new ListViewAdapter();
         listview.setAdapter(adapter);
 
-//        BringStudyList bringStudyList = new BringStudyList("123");
-//        try {
-//            String result = bringStudyList.execute().get();
-//            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-//            StudyListVO[] studyListVOS = gson.fromJson(result, StudyListVO[].class);
-//            for (StudyListVO studyListVO : studyListVOS) {
-//                adapter.addItem(studyListVO);
-//            }
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
+        BringStudyList bringStudyList = new BringStudyList(savedId);
+        try {
+            String result = bringStudyList.execute().get();
+            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
-
-        adapter.addItem("1일차","간다");
-        adapter.addItem("2일차","하루");
-        adapter.addItem("3일차","비행기");
-        adapter.addItem("4일차","배");
-
+            StudyListVO[] studyListVOS = gson.fromJson(result, StudyListVO[].class);
+            for (StudyListVO studyListVO : studyListVOS) {
+                adapter.addItem(studyListVO);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
 
 
@@ -61,7 +65,7 @@ public class StudyListActivity extends FragmentActivity {
             @Override
             public void onItemClick(AdapterView parent, View view, int i, long l) {
 
-                bringHangulInfo = new kr.ac.skuniv.di.hangulstudy.http.BringHangulInfo(String.valueOf(i+1));
+                bringHangulInfo = new BringHangulInfo(adapter.getItem(i).getWord());
                 try {
                     hangulinfo = bringHangulInfo.execute().get();
                 } catch (InterruptedException e) {
@@ -70,13 +74,43 @@ public class StudyListActivity extends FragmentActivity {
                     e.printStackTrace();
                 }
 
-//                Log.d("aaa",hangulinfo+"<<<<<<<<<<<<");
-
                 Intent intent = new Intent(StudyListActivity.this, StudyActivity.class);
                 intent.putExtra("hangulinfo",hangulinfo);
                 intent.putExtra("word",adapter.getItem(i).getWord());
+                intent.putExtra("day",adapter.getItem(i).getDay());
                 startActivity(intent);
+                finish();
             }
         });
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == StudyActivityCode) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                BringStudyList bringStudyList = new BringStudyList(savedId);
+                try {
+                    String result = bringStudyList.execute().get();
+                    Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                    adapter.listViewItemList.clear();
+                    StudyListVO[] studyListVOS = gson.fromJson(result, StudyListVO[].class);
+                    for (StudyListVO studyListVO : studyListVOS) {
+                        adapter.addItem(studyListVO);
+                       }
+
+                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetInvalidated();
+                    listview.invalidateViews();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }

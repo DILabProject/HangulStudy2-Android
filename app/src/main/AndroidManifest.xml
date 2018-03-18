@@ -26,7 +26,8 @@
         <activity
             android:name=".StudyListActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".SignUpActivity"></activity>
     </application>
 

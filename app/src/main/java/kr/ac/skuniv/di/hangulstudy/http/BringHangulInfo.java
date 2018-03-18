@@ -18,10 +18,12 @@ import okhttp3.Response;
 
 public class BringHangulInfo extends AsyncTask<Void,Void,String>{
     String answer;
-    String day;
+    String word;
 
-    public BringHangulInfo(String day){
-        this.day = day;
+
+    public BringHangulInfo(String word){
+        this.word = word;
+
     }
 
     @Override
@@ -31,7 +33,7 @@ public class BringHangulInfo extends AsyncTask<Void,Void,String>{
         Response response;
         RequestBody requestBody = null;
 
-        requestBody = new FormBody.Builder().add("day",day).build();
+        requestBody = new FormBody.Builder().add("word",word).build();
         Request request = new Request.Builder()
                 .url("http://117.17.142.133:8080/skuniv/hangul_input_complete")
                 .post(requestBody)

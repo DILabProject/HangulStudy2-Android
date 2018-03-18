@@ -15,12 +15,14 @@ import okhttp3.Response;
  * Created by Juhyun on 2018-03-15.
  */
 
-public class BringStudyList extends AsyncTask<Void,Void,String> {
+public class FinishWord extends AsyncTask<Void,Void,String> {
     String answer;
     String id;
+    String day;
 
-    public BringStudyList(String id){
+    public FinishWord(String id, String day){
         this.id = id;
+        this.day = day;
     }
 
     @Override
@@ -30,9 +32,9 @@ public class BringStudyList extends AsyncTask<Void,Void,String> {
         Response response;
         RequestBody requestBody = null;
 
-        requestBody = new FormBody.Builder().add("id",id).build();
+        requestBody = new FormBody.Builder().add("id",id).add("day",day).build();
         Request request = new Request.Builder()
-                .url("http://117.17.142.133:8080/skuniv/studyList")
+                .url("http://117.17.142.133:8080/skuniv/finishStudy")
                 .post(requestBody)
                 .build();
         try {
@@ -40,7 +42,6 @@ public class BringStudyList extends AsyncTask<Void,Void,String> {
             /////////////////////////////////// newcall 하고 응답받기를 기다리는중
             answer = response.body().string();
             Log.d("answer",answer);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
