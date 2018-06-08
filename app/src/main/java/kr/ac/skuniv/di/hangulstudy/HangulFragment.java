@@ -103,7 +103,6 @@ public class HangulFragment extends Fragment {
         ////// 글자 좌표정보 및 획수정보 를 번들(getArgument)로 받아옴
 
         hangulVO = gson.fromJson(getArguments().getString("hangulinfo"), HangulVO.class);
-
         lastSL = new ScalableLayout(getActivity(), backgroundSize * 100, backgroundSize * 100);
 
 
@@ -116,6 +115,7 @@ public class HangulFragment extends Fragment {
 
 
         MakeWord((JsonArray) hangulVO.getWord().get(wordCount));
+
 
         //워드 체크
         Log.d("checkWord", hangulVO.getWord().get(wordCount).toString());
@@ -403,6 +403,12 @@ public class HangulFragment extends Fragment {
                 } else if (direct.equals("vertical")) {
                     ivLEFT = point.getX1();
                     ivTOP = point.getY1() + j * blackBlockSize;
+                }else if (direct.equals("leftDiagonal")){
+                    ivLEFT = point.getX1() + j * blackBlockSize ;
+                    ivTOP = point.getY1() - j * blackBlockSize;
+                } else if (direct.equals("rightDiagonal")){
+                    ivLEFT = point.getX1() + j * blackBlockSize ;
+                    ivTOP = point.getY1() + j * blackBlockSize;
                 }
 //                sl.addView(iv,ivLEFT,ivTOP,blackBlockSize,blackBlockSize);
                 sl.addView(iv1, ivLEFT - (clearBlockSize - blackBlockSize) / 2, ivTOP - (clearBlockSize - blackBlockSize) / 2, clearBlockSize, clearBlockSize);
@@ -410,6 +416,10 @@ public class HangulFragment extends Fragment {
                     if (j == (point.getX2() - point.getX1()) / blackBlockSize) break;
                 } else if (direct.equals("vertical")) {
                     if (j == ((point.getY2() - point.getY1()) / blackBlockSize)) break;
+                } else if (direct.equals("leftDiagonal")){
+                    if (j == (point.getX2() - point.getX1()) / blackBlockSize) break;
+                }else if (direct.equals("rightDiagonal")){
+                    if (j == (point.getX2() - point.getX1()) / blackBlockSize) break;
                 }
             }
         }
@@ -477,6 +487,14 @@ public class HangulFragment extends Fragment {
                 } else if (direct.equals("vertical")) {
                     ivLEFT = point.getX1();
                     ivTOP = point.getY1() + j * blackBlockSize;
+                } else if (direct.equals("leftDiagonal")){
+                    iv.setRotation(45);
+                    ivLEFT = point.getX1() + j * blackBlockSize/2 ;
+                    ivTOP = point.getY1() - j * blackBlockSize/2;
+                } else if (direct.equals("rightDiagonal")){
+                    iv.setRotation(45);
+                    ivLEFT = point.getX1() + j * blackBlockSize/2 ;
+                    ivTOP = point.getY1() + j * blackBlockSize/2;
                 }
                 sl.addView(iv, ivLEFT, ivTOP, blackBlockSize, blackBlockSize);
 //                sl.addView(iv1,ivLEFT-(clearBlockSize-blackBlockSize)/2,ivTOP-(clearBlockSize-blackBlockSize)/2,clearBlockSize,clearBlockSize);
@@ -484,6 +502,10 @@ public class HangulFragment extends Fragment {
                     if (j == (point.getX2() - point.getX1()) / blackBlockSize) break;
                 } else if (direct.equals("vertical")) {
                     if (j == ((point.getY2() - point.getY1()) / blackBlockSize)) break;
+                } else if (direct.equals("leftDiagonal")){
+                    if (j == (point.getX2() - point.getX1()) / blackBlockSize *2) break;
+                }else if (direct.equals("rightDiagonal")){
+                    if (j == (point.getX2() - point.getX1()) / blackBlockSize *2 ) break;
                 }
             }
         }
@@ -511,6 +533,10 @@ public class HangulFragment extends Fragment {
             return "horizontal";
         else if (point.getX1() == point.getX2() && point.getY1() < point.getY2())
             return "vertical";
+        else if (point.getX1() < point.getX2() && point.getY1() > point.getY2())
+            return "leftDiagonal";
+        else if (point.getX1() < point.getX2() && point.getY1() < point.getY2())
+            return "rightDiagonal";
         else return "round";
     }
 
