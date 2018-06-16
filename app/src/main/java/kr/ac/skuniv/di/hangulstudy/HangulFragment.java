@@ -60,6 +60,7 @@ public class HangulFragment extends Fragment {
     private int backgroundSize = 10;
     ArrayList<View> GuideLine = new ArrayList<View>();
     ArrayList<Integer> CheckIDList = new ArrayList<Integer>();  //한 획을 그리면서 지나간 view들의 id를 담는 ArrayList
+    JsonObject WrongInfo = new JsonObject();
 
     private WrongWordVO wrongWordVO;
 
@@ -83,6 +84,7 @@ public class HangulFragment extends Fragment {
     int strokeCount = 0;
     int wordCount = 0; // jsonArray에 몇글자가 들어왔는지 체크
     SharedMemory sharedMemory;
+    String studyword = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,11 +103,9 @@ public class HangulFragment extends Fragment {
         parentLayout.setClickable(false);
 
         ////// 글자 좌표정보 및 획수정보 를 번들(getArgument)로 받아옴
-
+        studyword = getArguments().getString("word");
         hangulVO = gson.fromJson(getArguments().getString("hangulinfo"), HangulVO.class);
         lastSL = new ScalableLayout(getActivity(), backgroundSize * 100, backgroundSize * 100);
-
-
 //        //////////////////
 //        JsonObject object = hangulVO.getWord().get(wordCount).getAsJsonObject();
 //        String key = object.get("key").getAsString();
@@ -239,6 +239,7 @@ public class HangulFragment extends Fragment {
                         Log.d("wordCount", String.valueOf(wordCount));
                         Log.d("index", String.valueOf(index));
                         Fail("123",hangulVO.getStroke().get(wordCount).get(index-1).getLetter());
+                        Collect();
                     }
                     else if (isCollect) {
                         Collect();
@@ -263,8 +264,6 @@ public class HangulFragment extends Fragment {
             Log.d("wordCount", wordCount+"");
             if (wordCount != hangulVO.getWord().size() - 1) { //한글자의 마지막 획수까지 완성시킨경우
 
-
-
                 index = 0;
                 strokeCount = 0;
                 wordCount++;
@@ -283,6 +282,11 @@ public class HangulFragment extends Fragment {
 
             } else {
                 Log.d("finish", "done!!!!!!!!!");
+                JsonObject final_wrong = new JsonObject();
+                final_wrong.add(studyword,WrongInfo);
+                String a = final_wrong.toString();
+                Log.d("wrong info",a);
+                Toast.makeText(getActivity().getApplicationContext(),a,Toast.LENGTH_LONG).show();
                 //하루차 글자를 모두 완성했을경우
                 final Intent broadintent = new Intent("finishword");
                 final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
@@ -299,11 +303,21 @@ public class HangulFragment extends Fragment {
 
         Log.d("testID",id);
         Log.d("testLetter",letter);
-        Toast.makeText(getContext(), "다시그려보세요", Toast.LENGTH_LONG).show();
-        backPaint();
+        JsonObject wrong = null;
 
-        SendWorngLetterInfo sendWorngLetterInfo = new SendWorngLetterInfo(id, letter );
-        sendWorngLetterInfo.execute();
+//        wrong.addProperty(letter,"1");
+        if(WrongInfo.get(String.valueOf(studyword.charAt(wordCount))) == null){
+            wrong = new JsonObject();
+            wrong.addProperty(letter,"1");
+            WrongInfo.add(String.valueOf(studyword.charAt(wordCount)), wrong);
+        }else{
+            wrong = (JsonObject) WrongInfo.get(String.valueOf(studyword.charAt(wordCount)));
+            wrong.addProperty(letter,1);
+            WrongInfo.add(String.valueOf(studyword.charAt(wordCount)), wrong);
+        }
+//        backPaint();
+//        SendWorngLetterInfo sendWorngLetterInfo = new SendWorngLetterInfo(id, letter );
+//        sendWorngLetterInfo.execute();
     }
 
     /*********
