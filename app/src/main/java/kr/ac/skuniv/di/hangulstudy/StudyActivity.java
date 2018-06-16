@@ -97,6 +97,7 @@ public class StudyActivity extends FragmentActivity{
         // 번들생성
         Bundle bundle = new Bundle(1); // 파라미터는 전달할 데이터 수
         bundle.putString("hangulinfo",hangulinfo);
+        bundle.putString("word",word);
         //fragment들 생성
         hangul = new HangulFragment();
         hangul.setArguments(bundle);
