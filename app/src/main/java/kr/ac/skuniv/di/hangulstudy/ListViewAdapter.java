@@ -30,7 +30,7 @@ public class ListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     public ArrayList<StudyListVO> listViewItemList = new ArrayList<StudyListVO>() ;
 //
-    private TextView day;
+    private TextView index;
     private TextView word;
     private ImageView check;
 
@@ -58,7 +58,7 @@ public class ListViewAdapter extends BaseAdapter {
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        day = (TextView) convertView.findViewById(R.id.day) ;
+        index = (TextView) convertView.findViewById(R.id.index) ;
         word = (TextView) convertView.findViewById(R.id.word) ;
         check = (ImageView) convertView.findViewById(R.id.check);
 
@@ -66,7 +66,7 @@ public class ListViewAdapter extends BaseAdapter {
         StudyListVO listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        day.setText(listViewItem.getDay());
+        index.setText(String.valueOf(listViewItem.getNum()));
         word.setText(listViewItem.getWord());
         Log.d("checkpoint",listViewItem.getCheckword());
         if(listViewItem.getCheckword().equals("1")){

@@ -418,12 +418,20 @@ public class HangulFragment extends Fragment {
                     ivLEFT = point.getX1();
                     ivTOP = point.getY1() + j * blackBlockSize;
                 }else if (direct.equals("leftDiagonal")){
-                    ivLEFT = point.getX1() + j * blackBlockSize ;
-                    ivTOP = point.getY1() - j * blackBlockSize;
+                    ivLEFT = point.getX1() - j * blackBlockSize ;
+                    ivTOP = point.getY1() + j * blackBlockSize;
                 } else if (direct.equals("rightDiagonal")){
                     ivLEFT = point.getX1() + j * blackBlockSize ;
                     ivTOP = point.getY1() + j * blackBlockSize;
                 }
+//                 else if (direct.equals("circle1")) {
+//                    ivLEFT = point.getX1() - j * blackBlockSize;
+//                    ivTOP = point.getY1();
+//                } else if (direct.equals("circle2")) {
+//                    ivLEFT = point.getX1();
+//                    ivTOP = point.getY1() - j * blackBlockSize;
+//                }
+
 //                sl.addView(iv,ivLEFT,ivTOP,blackBlockSize,blackBlockSize);
                 sl.addView(iv1, ivLEFT - (clearBlockSize - blackBlockSize) / 2, ivTOP - (clearBlockSize - blackBlockSize) / 2, clearBlockSize, clearBlockSize);
                 if (direct.equals("horizontal")) {
@@ -431,10 +439,15 @@ public class HangulFragment extends Fragment {
                 } else if (direct.equals("vertical")) {
                     if (j == ((point.getY2() - point.getY1()) / blackBlockSize)) break;
                 } else if (direct.equals("leftDiagonal")){
-                    if (j == (point.getX2() - point.getX1()) / blackBlockSize) break;
-                }else if (direct.equals("rightDiagonal")){
+                    if (j == (point.getX1() - point.getX2()) / blackBlockSize) break;
+                } else if (direct.equals("rightDiagonal")){
                     if (j == (point.getX2() - point.getX1()) / blackBlockSize) break;
                 }
+//                 else if (direct.equals("circle1")) {
+//                    if (j == (point.getX1() - point.getX2()) / blackBlockSize) break;
+//                } else if (direct.equals("circle2")) {
+//                    if (j == (point.getY1() - point.getY2()) / blackBlockSize) break;
+//                }
             }
         }
 //        strokeCount += Integer.parseInt(strokeArr[index]);
@@ -488,6 +501,7 @@ public class HangulFragment extends Fragment {
             JsonObject jsonobj = jsonarr.get(i).getAsJsonObject();
             PointVO point = gson.fromJson(jsonobj, PointVO.class);
             String direct = PaintDirect(point);  // 그려야할 방향이 가로인지 세로인지 리턴값 = vertical or horizontal or round
+            System.out.println("dircet@@@"+direct);
             for (int j = 0; ; j++) {
                 Log.d("gg", "generate view");
                 ImageView iv = new ImageView(getActivity());
@@ -503,8 +517,8 @@ public class HangulFragment extends Fragment {
                     ivTOP = point.getY1() + j * blackBlockSize;
                 } else if (direct.equals("leftDiagonal")){
                     iv.setRotation(45);
-                    ivLEFT = point.getX1() + j * blackBlockSize/2 ;
-                    ivTOP = point.getY1() - j * blackBlockSize/2;
+                    ivLEFT = point.getX1() - j * blackBlockSize/2 ;
+                    ivTOP = point.getY1() + j * blackBlockSize/2;
                 } else if (direct.equals("rightDiagonal")){
                     iv.setRotation(45);
                     ivLEFT = point.getX1() + j * blackBlockSize/2 ;
@@ -517,7 +531,9 @@ public class HangulFragment extends Fragment {
                 } else if (direct.equals("vertical")) {
                     if (j == ((point.getY2() - point.getY1()) / blackBlockSize)) break;
                 } else if (direct.equals("leftDiagonal")){
-                    if (j == (point.getX2() - point.getX1()) / blackBlockSize *2) break;
+                    if (j == (point.getX1() - point.getX2()) / blackBlockSize *2) {
+                        System.out.println("asdfasdf");
+                        break;}
                 }else if (direct.equals("rightDiagonal")){
                     if (j == (point.getX2() - point.getX1()) / blackBlockSize *2 ) break;
                 }
@@ -547,11 +563,13 @@ public class HangulFragment extends Fragment {
             return "horizontal";
         else if (point.getX1() == point.getX2() && point.getY1() < point.getY2())
             return "vertical";
-        else if (point.getX1() < point.getX2() && point.getY1() > point.getY2())
+        else if (point.getX1() > point.getX2() && point.getY1() < point.getY2())
             return "leftDiagonal";
         else if (point.getX1() < point.getX2() && point.getY1() < point.getY2())
             return "rightDiagonal";
-        else return "round";
+        else
+            return "round";
+
     }
 
 

@@ -14,6 +14,15 @@ public class StudyListVO {
     private String day;
     private String word;
     private String checkword;
+    private int num;
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
 
     public String getId() {
         return id;
