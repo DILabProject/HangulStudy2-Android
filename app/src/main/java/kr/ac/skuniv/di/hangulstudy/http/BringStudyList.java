@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -30,7 +32,7 @@ public class BringStudyList extends AsyncTask<Void,Void,String> {
         Response response;
         RequestBody requestBody = null;
 
-        requestBody = new FormBody.Builder().add("id",id).build();
+        requestBody = new FormBody.Builder().add("id",id).add("day",getTime()).build();
         Request request = new Request.Builder()
                 .url("http://117.17.142.133:8080/skuniv/studyList")
                 .post(requestBody)
@@ -51,6 +53,16 @@ public class BringStudyList extends AsyncTask<Void,Void,String> {
     protected void onPostExecute(String s) {
         //super.onPostExecute(s);
         //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
+    }
+
+    private String getTime(){
+        long mNow;
+        Date mDate;
+        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        mNow = System.currentTimeMillis();
+        mDate = new Date(mNow);
+        return mFormat.format(mDate);
     }
 
 

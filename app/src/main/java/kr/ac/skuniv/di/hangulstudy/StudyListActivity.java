@@ -18,6 +18,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import kr.ac.skuniv.di.hangulstudy.VO.StudyListVO;
@@ -40,8 +42,8 @@ public class StudyListActivity extends FragmentActivity {
         SharedPreferences loginInfo = getSharedPreferences("loginInfo", Activity.MODE_PRIVATE);
         savedId = loginInfo.getString("id","none");
 
-       listview = (ListView) findViewById(R.id.listview) ;
-       adapter = new ListViewAdapter();
+        listview = (ListView) findViewById(R.id.listview);
+        adapter = new ListViewAdapter();
         listview.setAdapter(adapter);
 
         BringStudyList bringStudyList = new BringStudyList(savedId);
@@ -99,7 +101,7 @@ public class StudyListActivity extends FragmentActivity {
                     StudyListVO[] studyListVOS = gson.fromJson(result, StudyListVO[].class);
                     for (StudyListVO studyListVO : studyListVOS) {
                         adapter.addItem(studyListVO);
-                       }
+                    }
 
                     adapter.notifyDataSetChanged();
                     adapter.notifyDataSetInvalidated();
