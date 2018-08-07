@@ -55,7 +55,6 @@ public class HangulFragment extends Fragment {
     RelativeLayout parentLayout;
     Gson gson;
     LinkedList<Path> paintStack;
-
     private int backgroundid = 1500;
     LinkedList<Path> wrongPathStack;
     private int id = 1;
@@ -234,10 +233,17 @@ public class HangulFragment extends Fragment {
                     paintStack.push(sharedMemory.getDrawLine().path);
                     sharedMemory.getDrawLine().path = new Path();
                     boolean isCollect = true; // 획 그리기 성공 체크
+                    int checkSequenceId = 0;
+                    String letter = hangulVO.getStroke().get(wordCount).get(index-1).getLetter();
+
                     for (int i = 0; i < CheckIDList.size(); i++) {
+
                         if (CheckIDList.get(i) > 100 && CheckIDList.get(i) < 2000) {
                             isCollect = false;
+                        }else if(checkSequenceId > CheckIDList.get(i) && !letter.equals("ㅇ")){ // 글자를 역순으로 그리면 fail처리 단, o은 역순이 없기때문에 제외
+                            isCollect = false;
                         }
+                        checkSequenceId = CheckIDList.get(i);
                     }
 
                     //터치 후 정답 처리 부분.
