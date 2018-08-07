@@ -53,11 +53,11 @@ public class HangulFragment extends Fragment {
     RelativeLayout parentLayout;
     Gson gson;
     LinkedList<Path> paintStack;
-    private int backgroundid = 1000;
+    private int backgroundid = 1500;
     private int id = 1;
-    private int blackBlockSize = 100; //글자 사이즈
-    private int clearBlockSize = 200; //가이드라인 사이즈
-    private int backgroundSize = 10;
+    private int blackBlockSize = 120; //글자 사이즈
+    private int clearBlockSize = 250; //가이드라인 사이즈
+    private int backgroundSize = 15;
     ArrayList<View> GuideLine = new ArrayList<View>();
     ArrayList<Integer> CheckIDList = new ArrayList<Integer>();  //한 획을 그리면서 지나간 view들의 id를 담는 ArrayList
     JsonObject WrongInfo = new JsonObject();
@@ -105,7 +105,8 @@ public class HangulFragment extends Fragment {
         ////// 글자 좌표정보 및 획수정보 를 번들(getArgument)로 받아옴
         studyword = getArguments().getString("word");
         hangulVO = gson.fromJson(getArguments().getString("hangulinfo"), HangulVO.class);
-        lastSL = new ScalableLayout(getActivity(), backgroundSize * 100, backgroundSize * 100);
+        //백그라운드 사이즈 변경
+        lastSL = new ScalableLayout(getActivity(), backgroundSize * 115, backgroundSize * 115);
 //        //////////////////
 //        JsonObject object = hangulVO.getWord().get(wordCount).getAsJsonObject();
 //        String key = object.get("key").getAsString();
@@ -423,14 +424,13 @@ public class HangulFragment extends Fragment {
                 } else if (direct.equals("rightDiagonal")){
                     ivLEFT = point.getX1() + j * blackBlockSize ;
                     ivTOP = point.getY1() + j * blackBlockSize;
+                } else if (direct.equals("circle_start")) {
+                    ivLEFT = point.getX1() - j * blackBlockSize;
+                    ivTOP = point.getY1();
+                } else if (direct.equals("circle_last")) {
+                    ivLEFT = point.getX1();
+                    ivTOP = point.getY1() - j * blackBlockSize;
                 }
-//                 else if (direct.equals("circle1")) {
-//                    ivLEFT = point.getX1() - j * blackBlockSize;
-//                    ivTOP = point.getY1();
-//                } else if (direct.equals("circle2")) {
-//                    ivLEFT = point.getX1();
-//                    ivTOP = point.getY1() - j * blackBlockSize;
-//                }
 
 //                sl.addView(iv,ivLEFT,ivTOP,blackBlockSize,blackBlockSize);
                 sl.addView(iv1, ivLEFT - (clearBlockSize - blackBlockSize) / 2, ivTOP - (clearBlockSize - blackBlockSize) / 2, clearBlockSize, clearBlockSize);
@@ -442,12 +442,11 @@ public class HangulFragment extends Fragment {
                     if (j == (point.getX1() - point.getX2()) / blackBlockSize) break;
                 } else if (direct.equals("rightDiagonal")){
                     if (j == (point.getX2() - point.getX1()) / blackBlockSize) break;
+                } else if (direct.equals("circle_start")) {
+                    if (j == (point.getX1() - point.getX2()) / blackBlockSize) break;
+                } else if (direct.equals("circle_last")) {
+                    if (j == (point.getY1() - point.getY2()) / blackBlockSize) break;
                 }
-//                 else if (direct.equals("circle1")) {
-//                    if (j == (point.getX1() - point.getX2()) / blackBlockSize) break;
-//                } else if (direct.equals("circle2")) {
-//                    if (j == (point.getY1() - point.getY2()) / blackBlockSize) break;
-//                }
             }
         }
 //        strokeCount += Integer.parseInt(strokeArr[index]);
@@ -497,6 +496,8 @@ public class HangulFragment extends Fragment {
      ********/
     public void PaintWord(JsonArray jsonarr, ScalableLayout sl) {
 
+        int circle_flag = 0;
+
         for (int i = 0; i < jsonarr.size(); i++) {
             JsonObject jsonobj = jsonarr.get(i).getAsJsonObject();
             PointVO point = gson.fromJson(jsonobj, PointVO.class);
@@ -505,37 +506,67 @@ public class HangulFragment extends Fragment {
             for (int j = 0; ; j++) {
                 Log.d("gg", "generate view");
                 ImageView iv = new ImageView(getActivity());
+
+                //원을 그리기위한 ImageView
+                ImageView ivCircle = new ImageView(getActivity());
+                ivCircle.setBackgroundResource(R.drawable.img_o);
+
                 int ivTOP = 0;
                 int ivLEFT = 0;
                 iv.setBackgroundResource(R.drawable.b); //이미지뷰 이미지지정 :  글자블럭
                 //글자블럭 param 설정
-                if (direct.equals("horizontal")) {
+                if (direct.equals("horizontal") && circle_flag == 0) {
                     ivLEFT = point.getX1() + j * blackBlockSize;
                     ivTOP = point.getY1();
-                } else if (direct.equals("vertical")) {
+                    sl.addView(iv, ivLEFT, ivTOP, blackBlockSize, blackBlockSize);
+                } else if (direct.equals("vertical") && circle_flag == 0) {
                     ivLEFT = point.getX1();
                     ivTOP = point.getY1() + j * blackBlockSize;
+                    sl.addView(iv, ivLEFT, ivTOP, blackBlockSize, blackBlockSize);
                 } else if (direct.equals("leftDiagonal")){
                     iv.setRotation(45);
                     ivLEFT = point.getX1() - j * blackBlockSize/2 ;
                     ivTOP = point.getY1() + j * blackBlockSize/2;
+                    sl.addView(iv, ivLEFT, ivTOP, blackBlockSize, blackBlockSize);
                 } else if (direct.equals("rightDiagonal")){
                     iv.setRotation(45);
                     ivLEFT = point.getX1() + j * blackBlockSize/2 ;
                     ivTOP = point.getY1() + j * blackBlockSize/2;
+                    sl.addView(iv, ivLEFT, ivTOP, blackBlockSize, blackBlockSize);
+                } else if (direct.equals("circle_start")) {
+                    circle_flag = 1;
+                    //"ㅇ"이 초성인지 종성인지 각 상황에 따른 특수로직 추가 작성해야함.
+                    ivLEFT = point.getX1();
+                    Log.d("@@@pointTest",""+ivLEFT);
+                    if(ivLEFT == 800)
+                        sl.addView(ivCircle, 280, 480, 630, 630);
+                    if(ivLEFT == 1000)
+                        sl.addView(ivCircle, 600, 960, 500, 500);
+                    if(ivLEFT == 1100)
+                        sl.addView(ivCircle, 520, 2700, 680, 650);
+//                    sl.addView(ivCircle, 180, 280, 450, 450);
+                } else if (direct.equals("circle_last")) {
+                    circle_flag = 0;
                 }
-                sl.addView(iv, ivLEFT, ivTOP, blackBlockSize, blackBlockSize);
+
+                //"ㅇ"일떄는 addView 안찍도록 Logic처리
+//                if(circle_flag == 0){
+//                    sl.addView(iv, ivLEFT, ivTOP, blackBlockSize, blackBlockSize);
+//                }
+
 //                sl.addView(iv1,ivLEFT-(clearBlockSize-blackBlockSize)/2,ivTOP-(clearBlockSize-blackBlockSize)/2,clearBlockSize,clearBlockSize);
                 if (direct.equals("horizontal")) {
                     if (j == (point.getX2() - point.getX1()) / blackBlockSize) break;
                 } else if (direct.equals("vertical")) {
                     if (j == ((point.getY2() - point.getY1()) / blackBlockSize)) break;
                 } else if (direct.equals("leftDiagonal")){
-                    if (j == (point.getX1() - point.getX2()) / blackBlockSize *2) {
-                        System.out.println("asdfasdf");
-                        break;}
-                }else if (direct.equals("rightDiagonal")){
+                    if (j == (point.getX1() - point.getX2()) / blackBlockSize *2) break;
+                } else if (direct.equals("rightDiagonal")){
                     if (j == (point.getX2() - point.getX1()) / blackBlockSize *2 ) break;
+                } else if (direct.equals("circle_start")) {
+                    if (j == (point.getX1() - point.getX2()) / blackBlockSize) break;
+                } else if (direct.equals("circle_last")) {
+                    if (j == (point.getY1() - point.getY2()) / blackBlockSize) break;
                 }
             }
         }
@@ -567,9 +598,12 @@ public class HangulFragment extends Fragment {
             return "leftDiagonal";
         else if (point.getX1() < point.getX2() && point.getY1() < point.getY2())
             return "rightDiagonal";
+        else if (point.getX1() > point.getX2() && point.getY1() == point.getY2())
+            return "circle_start";
+        else if (point.getX1() == point.getX2() && point.getY1() > point.getY2())
+            return "circle_last";
         else
-            return "round";
-
+            return null;
     }
 
 

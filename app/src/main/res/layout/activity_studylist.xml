@@ -1,27 +1,79 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FFEFD439">
+    android:background="@drawable/blue_bg"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:gravity="center"
-        android:textSize="40dp"
-        android:textColor="#000000"
-        android:text="한글공부"
-        android:layout_marginTop="15dp"/>
-
-    <ListView
-        android:id="@+id/listview"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:layout_width="400dp"
-        android:layout_height="200dp"
-        android:dividerHeight="0dp"
-        android:scrollbarSize="10dp"
-        android:divider="#000000"
-        android:background="#f2be83"/>
+        android:gravity="center"
+        android:text="오늘의 공부단어"
+        android:textColor="#ffffff"
+        android:textSize="35dp" />
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="400dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="#3bbad1"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="번호"
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="38dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="단어"
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="확인"
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+
+
+    </LinearLayout>
+    <!--
+        <ExpandableListView
+            android:id="@+id/expandable_listview"
+            android:layout_width="400dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:background="#ffffff"
+            android:groupIndicator="@null"
+            android:scrollbarSize="10dp"></ExpandableListView>
+    -->
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_width="400dp"
+            android:layout_height="200dp"
+            android:dividerHeight="0dp"
+            android:scrollbarSize="10dp"
+            android:divider="#000000"
+            android:background="#ffffff"/>
+
+
+    </LinearLayout>
