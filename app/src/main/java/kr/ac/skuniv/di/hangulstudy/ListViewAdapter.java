@@ -29,7 +29,7 @@ import kr.ac.skuniv.di.hangulstudy.http.BringStudyList;
 public class ListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     public ArrayList<StudyListVO> listViewItemList = new ArrayList<StudyListVO>() ;
-//
+
     private TextView index;
     private TextView word;
     private ImageView check;
@@ -66,11 +66,11 @@ public class ListViewAdapter extends BaseAdapter {
         StudyListVO listViewItem = listViewItemList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        index.setText(String.valueOf(listViewItem.getNum()));
+        index.setText(String.valueOf(listViewItem.getDay()));
         word.setText(listViewItem.getWord());
         Log.d("checkpoint",listViewItem.getCheckword());
         if(listViewItem.getCheckword().equals("1")){
-            check.setImageResource(R.drawable.checkimage);
+//            check.setImageResource(R.drawable.checkimage);
         }
         return convertView;
     }

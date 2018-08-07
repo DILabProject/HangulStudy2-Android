@@ -553,8 +553,10 @@ public class HangulFragment extends Fragment {
                         sl.addView(ivCircle, 280, 480, 630, 630);
                     if(ivLEFT == 1000)
                         sl.addView(ivCircle, 600, 960, 500, 500);
-                    if(ivLEFT == 1100)
-                        sl.addView(ivCircle, 520, 2700, 680, 650);
+                    if(ivLEFT == 1100) {
+                        Log.d("@@@1100","test");
+                        sl.addView(ivCircle, 520, 270, 690, 600);
+                    }
 //                    sl.addView(ivCircle, 180, 280, 450, 450);
                 } else if (direct.equals("circle_last")) {
                     circle_flag = 0;
