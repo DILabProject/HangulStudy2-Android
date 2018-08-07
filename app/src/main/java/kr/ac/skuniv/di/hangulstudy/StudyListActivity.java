@@ -33,6 +33,7 @@ public class StudyListActivity extends FragmentActivity {
     ListViewAdapter adapter;
     int StudyActivityCode = 1000;
     ListView listview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class StudyListActivity extends FragmentActivity {
 
         SharedPreferences loginInfo = getSharedPreferences("loginInfo", Activity.MODE_PRIVATE);
         savedId = loginInfo.getString("id","none");
+
 
         listview = (ListView) findViewById(R.id.listview);
         adapter = new ListViewAdapter();
