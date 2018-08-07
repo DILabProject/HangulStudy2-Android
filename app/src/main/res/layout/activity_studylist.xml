@@ -52,28 +52,28 @@
 
 
     </LinearLayout>
-
-    <ExpandableListView
-        android:id="@+id/expandable_listview"
-        android:layout_width="400dp"
-        android:layout_height="180dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:background="#ffffff"
-        android:groupIndicator="@null"
-        android:scrollbarSize="10dp"></ExpandableListView>
-
     <!--
-    <ListView
-        android:id="@+id/listview"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_width="400dp"
-        android:layout_height="200dp"
-        android:dividerHeight="0dp"
-        android:scrollbarSize="10dp"
-        android:divider="#000000"
-        android:background="#ffffff"/>
+        <ExpandableListView
+            android:id="@+id/expandable_listview"
+            android:layout_width="400dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:background="#ffffff"
+            android:groupIndicator="@null"
+            android:scrollbarSize="10dp"></ExpandableListView>
     -->
 
-</LinearLayout>
+        <ListView
+            android:id="@+id/listview"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_width="400dp"
+            android:layout_height="200dp"
+            android:dividerHeight="0dp"
+            android:scrollbarSize="10dp"
+            android:divider="#000000"
+            android:background="#ffffff"/>
+
+
+    </LinearLayout>
