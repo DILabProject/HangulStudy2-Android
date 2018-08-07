@@ -43,6 +43,8 @@ import kr.ac.skuniv.di.hangulstudy.VO.WrongWordVO;
 import kr.ac.skuniv.di.hangulstudy.http.SendWorngLetterInfo;
 import kr.ac.skuniv.di.hangulstudy.sharedmemory.SharedMemory;
 
+import static android.graphics.Color.RED;
+
 
 /**
  * Created by namgiwon on 2018. 1. 30..
@@ -53,7 +55,9 @@ public class HangulFragment extends Fragment {
     RelativeLayout parentLayout;
     Gson gson;
     LinkedList<Path> paintStack;
+
     private int backgroundid = 1500;
+    LinkedList<Path> wrongPathStack;
     private int id = 1;
     private int blackBlockSize = 120; //글자 사이즈
     private int clearBlockSize = 250; //가이드라인 사이즈
@@ -90,6 +94,7 @@ public class HangulFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         paintStack = new LinkedList<Path>();
+        wrongPathStack= new LinkedList<Path>();
         sharedMemory = SharedMemory.getinstance();
     }
 
@@ -305,7 +310,7 @@ public class HangulFragment extends Fragment {
         Log.d("testID",id);
         Log.d("testLetter",letter);
         JsonObject wrong = null;
-
+        wrongPathStack.push(sharedMemory.getDrawLine().path);
 //        wrong.addProperty(letter,"1");
         if(WrongInfo.get(String.valueOf(studyword.charAt(wordCount))) == null){
             wrong = new JsonObject();
@@ -575,6 +580,18 @@ public class HangulFragment extends Fragment {
     public void resetPaint() {
         sharedMemory.getDrawLine().canvas.drawColor(0, PorterDuff.Mode.CLEAR);
         paintStack = new LinkedList<Path>();
+        wrongPathStack = new LinkedList<Path>();
+        sharedMemory.getDrawLine().invalidate();
+    }
+
+    public void redPaint(){
+        sharedMemory.getDrawLine().canvas.drawColor(RED, PorterDuff.Mode.CLEAR);
+
+        if (wrongPathStack.size() > 0) {
+            for (int i = 0; i < wrongPathStack.size(); i++) {
+                sharedMemory.getDrawLine().canvas.drawPath(wrongPathStack.get(i), sharedMemory.getDrawLine().paint);
+            }
+        }
         sharedMemory.getDrawLine().invalidate();
     }
 
