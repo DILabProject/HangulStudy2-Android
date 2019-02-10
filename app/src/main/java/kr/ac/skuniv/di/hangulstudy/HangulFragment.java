@@ -50,6 +50,7 @@ import static android.graphics.Color.RED;
  * Created by namgiwon on 2018. 1. 30..
  */
 
+
 public class HangulFragment extends Fragment {
     DrawLine drawLine;
     RelativeLayout parentLayout;
