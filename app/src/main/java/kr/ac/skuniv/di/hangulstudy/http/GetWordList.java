@@ -11,20 +11,15 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-/**
- * Created by Juhyun on 2018-03-15.
- */
+public class GetWordList extends AsyncTask<Void,Void,String>{
 
-public class FinishWord extends AsyncTask<Void,Void,String> {
     String answer;
     String id;
-    int day;
-    String word;
+    String day;
 
-    public FinishWord(String id, int day, String word){
+    public GetWordList(String id, String day){
         this.id = id;
         this.day = day;
-        this.word = word;
     }
 
     @Override
@@ -34,19 +29,17 @@ public class FinishWord extends AsyncTask<Void,Void,String> {
         Response response;
         RequestBody requestBody = null;
 
-        requestBody = new FormBody.Builder().add("id",id).add("day",String.valueOf(day)).add("word",word).build();
-        Log.d("@@@word",""+word);
-        Log.d("@@@day",""+day);
-        Log.d("@@@id",""+id);
+        requestBody = new FormBody.Builder().add("id",id).add("day",day).build();
         Request request = new Request.Builder()
-                .url("http://117.17.142.133:8080/skuniv/finishStudy")
+                .url("http://117.17.142.133:8080/skuniv/getWordList")
                 .post(requestBody)
                 .build();
         try {
             response = client.newCall(request).execute();
             /////////////////////////////////// newcall 하고 응답받기를 기다리는중
             answer = response.body().string();
-            Log.d("answer",answer);
+            Log.d("@@@@answer",answer);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,6 +51,4 @@ public class FinishWord extends AsyncTask<Void,Void,String> {
         //super.onPostExecute(s);
         //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
     }
-
-
 }

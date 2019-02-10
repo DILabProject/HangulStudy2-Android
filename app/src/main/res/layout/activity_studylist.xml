@@ -9,7 +9,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="15dp"
         android:gravity="center"
-        android:text="오늘의 공부단어"
+        android:text="한글 공부"
         android:textColor="#ffffff"
         android:textSize="35dp" />
 
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
-            android:text="번호"
+            android:text="단계"
             android:textColor="#ffffff"
             android:textSize="20dp" />
 
@@ -37,16 +37,7 @@
             android:layout_marginLeft="38dp"
             android:layout_weight="2"
             android:gravity="center"
-            android:text="단어"
-            android:textColor="#ffffff"
-            android:textSize="20dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="확인"
+            android:text="성취도"
             android:textColor="#ffffff"
             android:textSize="20dp" />
 
@@ -70,7 +61,7 @@
             android:layout_marginTop="15dp"
             android:layout_width="400dp"
             android:layout_height="200dp"
-            android:dividerHeight="0dp"
+            android:dividerHeight="1dp"
             android:scrollbarSize="10dp"
             android:divider="#000000"
             android:background="#ffffff"/>

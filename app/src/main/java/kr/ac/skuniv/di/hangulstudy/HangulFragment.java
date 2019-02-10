@@ -50,6 +50,7 @@ import static android.graphics.Color.RED;
  * Created by namgiwon on 2018. 1. 30..
  */
 
+
 public class HangulFragment extends Fragment {
     DrawLine drawLine;
     RelativeLayout parentLayout;
@@ -548,14 +549,13 @@ public class HangulFragment extends Fragment {
                     circle_flag = 1;
                     //"ㅇ"이 초성인지 종성인지 각 상황에 따른 특수로직 추가 작성해야함.
                     ivLEFT = point.getX1();
-                    Log.d("@@@pointTest",""+ivLEFT);
                     if(ivLEFT == 800)
                         sl.addView(ivCircle, 280, 480, 630, 630);
                     if(ivLEFT == 1000)
                         sl.addView(ivCircle, 600, 960, 500, 500);
-                    if(ivLEFT == 1100)
-                        sl.addView(ivCircle, 520, 2700, 680, 650);
-//                    sl.addView(ivCircle, 180, 280, 450, 450);
+                    if(ivLEFT == 1100) {
+                        sl.addView(ivCircle, 520, 270, 690, 600);
+                    }
                 } else if (direct.equals("circle_last")) {
                     circle_flag = 0;
                 }
