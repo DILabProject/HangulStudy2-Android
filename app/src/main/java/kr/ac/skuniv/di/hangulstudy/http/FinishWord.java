@@ -18,11 +18,13 @@ import okhttp3.Response;
 public class FinishWord extends AsyncTask<Void,Void,String> {
     String answer;
     String id;
-    String day;
+    int day;
+    String word;
 
-    public FinishWord(String id, String day){
+    public FinishWord(String id, int day, String word){
         this.id = id;
         this.day = day;
+        this.word = word;
     }
 
     @Override
@@ -32,7 +34,10 @@ public class FinishWord extends AsyncTask<Void,Void,String> {
         Response response;
         RequestBody requestBody = null;
 
-        requestBody = new FormBody.Builder().add("id",id).add("day",day).build();
+        requestBody = new FormBody.Builder().add("id",id).add("day",String.valueOf(day)).add("word",word).build();
+        Log.d("@@@word",""+word);
+        Log.d("@@@day",""+day);
+        Log.d("@@@id",""+id);
         Request request = new Request.Builder()
                 .url("http://117.17.142.133:8080/skuniv/finishStudy")
                 .post(requestBody)

@@ -11,18 +11,9 @@ import java.util.Map;
 
 public class StudyListVO {
     private String id;
-    private String day;
+    private int day;
     private String word;
     private String checkword;
-    private int num;
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
 
     public String getId() {
         return id;
@@ -32,11 +23,11 @@ public class StudyListVO {
         this.id = id;
     }
 
-    public String getDay() {
+    public int getDay() {
         return day;
     }
 
-    public void setDay(String day) {
+    public void setDay(int day) {
         this.day = day;
     }
 

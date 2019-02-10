@@ -40,7 +40,7 @@ public class StudyActivity extends FragmentActivity{
     RelativeLayout hangulja;
     HangulFragment hangul;
     String word ;
-    String day;
+    int day;
     String isFinish;
     int wordindex; // 글자 인덱스 (프래그먼트로 부터 index를 받아서 저장)
     private DrawLine drawLine = null; // 선그리기 뷰 객체
@@ -78,7 +78,7 @@ public class StudyActivity extends FragmentActivity{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_study);
         word = getIntent().getStringExtra("word");
-        day = getIntent().getStringExtra("day");
+        day = getIntent().getIntExtra("day",0);
         sharedMemory = SharedMemory.getinstance();
         SharedPreferences loginInfo = getSharedPreferences("loginInfo", Activity.MODE_PRIVATE);
         id = loginInfo.getString("id","none");
@@ -244,7 +244,7 @@ public class StudyActivity extends FragmentActivity{
             if(wordindex >= 0 )
             {
                 //what you want to do
-                // preview 를 프래그먼트로 부터 브로드캐스트리시버로 받아서 preview update
+                // preview 를 프래그먼트로  부터 브로드캐스트리시버로 받아서 preview update
                 preview.setText(String.valueOf(word.charAt(wordindex)));
             }
         }
@@ -257,13 +257,15 @@ public class StudyActivity extends FragmentActivity{
             isFinish = intent.getStringExtra("isfinish");
             if(isFinish.equals("finish"))
             {
+                Log.d("@@@finish","test");
                 //what you want to do
                 // preview 를 프래그먼트로 부터 브로드캐스트리시버로 받아서 preview update
-                FinishWord fw = new FinishWord(id,day);
+                FinishWord fw = new FinishWord(id,day,word);
                 fw.execute();
                 Intent intent1 = new Intent(StudyActivity.this,StudyListActivity.class);
                 startActivity(intent1);
                 finish();
+                Log.d("@@@finish","test2");
             }
         }
     };
